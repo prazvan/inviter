@@ -7,7 +7,7 @@ namespace App\Helpers\Traits;
  */
 trait Singleton
 {
-    /**
+    /**Demonstrate understanding of MVC
      * Self Instance
      *
      * @var self
@@ -35,21 +35,24 @@ trait Singleton
     /**
      *  Prevent cloning of the given instance
      */
-    protected function __clone() {
+    protected function __clone()
+    {
         // no object cloning for you
     }
 
     /**
      * Prevent serialization of the instance
      */
-    protected function __sleep() {
+    protected function __sleep()
+    {
         // you had way to many red bulls, no sleep for ya :)
     }
 
     /**
      * Prevent deserialization of the instance
      */
-    protected function __wakeup() {
+    protected function __wakeup()
+    {
         // you can't wake up if you're not sleeping :)
     }
 }

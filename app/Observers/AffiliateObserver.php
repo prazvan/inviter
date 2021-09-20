@@ -13,7 +13,8 @@ final class AffiliateObserver
     /**
      * Handle the Affiliate "creating" event.
      *
-     * @param  Affiliate  $affiliate
+     * @param Affiliate $affiliate
+     * @return Affiliate
      */
     public function creating(Affiliate &$affiliate): Affiliate
     {

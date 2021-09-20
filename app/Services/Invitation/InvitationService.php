@@ -67,7 +67,7 @@ final class InvitationService
      * @return Collection
      * @throws \Exception
      */
-    public function getAllEligibleInvitees(): ?Collection
+    public static function getAllEligibleInvitees(): ?Collection
     {
         return AffiliateRepository::make()->getAll(true);
     }
@@ -78,7 +78,7 @@ final class InvitationService
      * @return Collection
      * @throws \Exception
      */
-    public function getAllIneligibleInvitees(): ?Collection
+    public static function getAllIneligibleInvitees(): ?Collection
     {
         return AffiliateRepository::make()->getAll(false);
     }

@@ -2,7 +2,6 @@
 
 namespace App\Services\FileParser\Drivers;
 
-use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 
 /**

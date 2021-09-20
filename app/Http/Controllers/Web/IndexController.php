@@ -20,15 +20,6 @@ final class IndexController extends Controller
      */
     public function __invoke(): View
     {
-
-        dd(JsonTextParserService::make()->setTest(0), JsonTextParserService::make()->setTest(1), JsonTextParserService::make()->setTest(2));
-
-
-
-
-        dd('aici');
-
-
         return view('index');
     }
 }

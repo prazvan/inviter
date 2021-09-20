@@ -24,7 +24,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // public api routes
 Route::post('/upload', App\Http\Controllers\Api\UploadController::class);
 
-// Resource collection
+// /api/invitees redirect :)
 Route::redirect('/invitees', '/',Symfony\Component\HttpFoundation\Response::HTTP_MOVED_PERMANENTLY);
 
 // resource route
@@ -42,8 +42,9 @@ Route::get('/invitees/{list_type?}', function ($list_type)
         break;
     }
 
-    $data = AffiliateRepository::make()->getAll($eligible);
+    // get affiliates
+    $affiliates = AffiliateRepository::make()->getAll($eligible);
 
     // return json collection
-    return InviteesCollection::make($data)->toJson();
+    return InviteesCollection::make($affiliates)->toJson();
 });

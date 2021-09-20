@@ -5,16 +5,12 @@ namespace App\Repositories;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
-use App\Helpers\Traits\{
-    Cacheable,
-    Singleton
-};
-
+use App\Helpers\Traits\Singleton;
 use App\Repositories\Eloquent\EloquentRepository;
 use App\Models\Affiliate;
 
 /**
- * Affiliate Repo
+ * Affiliate Repository
  */
 final class AffiliateRepository extends EloquentRepository
 {
