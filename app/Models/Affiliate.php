@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Observers\AffiliateObserver;
 
+use App\Services\AffiliateLocation\AffiliateLocationService;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
@@ -36,6 +37,7 @@ class Affiliate extends Model
         'affiliate_id',
         'latitude',
         'longitude',
+        'distance',
         'name',
         'eligible_for_events',
         'created_at',

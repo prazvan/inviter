@@ -12,7 +12,11 @@ use App\Models\Office;
  */
 final class AffiliateLocationService
 {
-    use Singleton;
+
+    public static function make() : self
+    {
+        return new self;
+    }
 
     /**
      * Affiliate longitude
@@ -26,6 +30,13 @@ final class AffiliateLocationService
      * @var float|int
      */
     private float $latitude = 0;
+
+    /**
+     * Distance
+     *
+     * @var float|int
+     */
+    private float $distance = 0;
 
     /**
      * Affiliate Location Coordinates
@@ -50,7 +61,7 @@ final class AffiliateLocationService
     {
         $office = $this->getOffice(Office::DUBLIN_OFFICE_ID);
 
-        // get distance in KM
+        // get distance in Meters
         $distance = $this->haversineGreatCircleDistance(
             $office->getAttribute('latitude'),
             $office->getAttribute('longitude'),
@@ -58,8 +69,21 @@ final class AffiliateLocationService
             $this->longitude
         );
 
+        // set distance
+        $this->setDistance($distance);
+
         // Affiliate if eligible the distance is within 100 km of the given office
-        return ($distance <= 100);
+        return $this->getDistance() < Office::DUBLIN_ALLOWED_DISTANCE;
+    }
+
+    /**
+     * get Distance
+     *
+     * @return float|int
+     */
+    public function getDistance()
+    {
+        return $this->distance;
     }
 
     /**
@@ -71,6 +95,46 @@ final class AffiliateLocationService
     private function getOffice(int $office_id = 0): Office
     {
        return OfficeRepository::make()->getById($office_id);
+    }
+
+    /**
+     * Set Distance
+     *
+     * @param int $distance
+     * @return $this
+     */
+    private function setDistance($distance): self
+    {
+        $this->distance = (int) round($distance);
+        return $this;
+    }
+
+
+    /**
+     * Calculates the great-circle distance between two points, with
+     * the Haversine formula.
+     * @param float $latitudeFrom Latitude of start point in [deg decimal]
+     * @param float $longitudeFrom Longitude of start point in [deg decimal]
+     * @param float $latitudeTo Latitude of target point in [deg decimal]
+     * @param float $longitudeTo Longitude of target point in [deg decimal]
+     * @param float $earthRadius Mean earth radius in [m]
+     * @return float Distance between points in [m] (same as earthRadius)
+     */
+    function haversineGreatCircleDistanceOriginal(
+        $latitudeFrom, $longitudeFrom, $latitudeTo, $longitudeTo, $earthRadius = 6371000)
+    {
+        // convert from degrees to radians
+        $latFrom = deg2rad($latitudeFrom);
+        $lonFrom = deg2rad($longitudeFrom);
+        $latTo = deg2rad($latitudeTo);
+        $lonTo = deg2rad($longitudeTo);
+
+        $latDelta = $latTo - $latFrom;
+        $lonDelta = $lonTo - $lonFrom;
+
+        $angle = 2 * asin(sqrt(pow(sin($latDelta / 2), 2) +
+                cos($latFrom) * cos($latTo) * pow(sin($lonDelta / 2), 2)));
+        return $angle * $earthRadius;
     }
 
     /**

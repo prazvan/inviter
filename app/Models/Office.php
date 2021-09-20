@@ -18,6 +18,11 @@ class Office extends Model
     public const DUBLIN_OFFICE_ID = 1;
 
     /**
+     * Allowed Distance
+     */
+    public const DUBLIN_ALLOWED_DISTANCE = 100; // 100 km radius;
+
+    /**
      * The table associated with the model.
      *
      * @var string

@@ -9,7 +9,8 @@
                         and send emails to all of them so they can come to the amazing party you're organazing :)
                     </p>
 
-                    <a class="btn btn-primary align-center" href="#" role="button" @click="fetchInvitees">Check current records.</a>
+                    <a class="btn btn-primary align-center" href="#" role="button"
+                       @click="fetchInvitees">Check current records.</a>
                     <a class="btn btn-success align-center" href="#" role="button" @click="reset">New Upload</a>
                     <hr>
                 </div>
@@ -39,47 +40,54 @@
                 </vue-dropzone>
 
                 <div v-if="showLists">
-                    <h2 class="mt-5">Invitees on the Whitelist</h2>
-                    <table class="table">
-                        <thead>
+                    <div v-if="inviteesWhitelist.length > 0">
+                        <h2 class="mt-5">Invitees on the Whitelist</h2>
+                        <table class="table">
+                            <thead>
                             <tr>
                                 <th scope="col">ID</th>
                                 <th scope="col">Affiliate ID</th>
                                 <th scope="col">Name</th>
+                                <th scope="col">Distance (in KM)</th>
                                 <th scope="col">Coordinates</th>
                             </tr>
-                        </thead>
-                        <tbody>
-                        <tr v-for="item in inviteesWhitelist">
-                            <th scope="row">{{ item.id }}</th>
-                            <td>{{ item.affiliate_id }}</td>
-                            <td>{{ item.name }}</td>
-                            <td>{{ item.latitude }}, {{ item.longitude }}</td>
-                        </tr>
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                            <tr v-for="item in inviteesWhitelist">
+                                <th scope="row">{{ item.id }}</th>
+                                <td>{{ item.affiliate_id }}</td>
+                                <td>{{ item.name }}</td>
+                                <td>{{ item.distance }} KM</td>
+                                <td>{{ item.latitude }}, {{ item.longitude }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <hr>
+                    </div>
 
-                    <hr>
-
-                    <h2 class="mt-5">Invitees on the BlackList</h2>
-                    <table class="table">
-                        <thead>
-                        <tr>
-                            <th scope="col">ID</th>
-                            <th scope="col">Affiliate ID</th>
-                            <th scope="col">Name</th>
-                            <th scope="col">Coordinates</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr v-for="item in inviteesBlacklist">
-                            <th scope="row">{{ item.id }}</th>
-                            <td>{{ item.affiliate_id }}</td>
-                            <td>{{ item.name }}</td>
-                            <td>{{ item.latitude }}, {{ item.longitude }}</td>
-                        </tr>
-                        </tbody>
-                    </table>
+                    <div v-if="inviteesBlacklist.length > 0">
+                        <h2 class="mt-5">Invitees on the BlackList</h2>
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Affiliate ID</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Distance (in KM)</th>
+                                <th scope="col">Coordinates</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr v-for="item in inviteesBlacklist">
+                                <th scope="row">{{ item.id }}</th>
+                                <td>{{ item.affiliate_id }}</td>
+                                <td>{{ item.name }}</td>
+                                <td>{{ item.distance }} KM</td>
+                                <td>{{ item.latitude }}, {{ item.longitude }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
             </div>

@@ -18,6 +18,7 @@ class Affiliates extends Migration
             $table->integer('affiliate_id')->unique();
             $table->string('latitude');
             $table->string('longitude');
+            $table->string('distance');
             $table->string('name');
             $table->boolean('eligible_for_events');
             $table->timestamps();

@@ -14,34 +14,41 @@ final class AffiliateObserver
      * Handle the Affiliate "creating" event.
      *
      * @param  Affiliate  $affiliate
-     * @return void
      */
-    public function creating(Affiliate $affiliate)
+    public function creating(Affiliate &$affiliate): Affiliate
     {
-        $affiliate->setAttribute('eligible_for_events', $this->isEligible($affiliate));
+        $service = self::getAffiliateLocationService($affiliate);
+
+        $affiliate->setAttribute('eligible_for_events', $service->isEligible());
+        $affiliate->setAttribute('distance', $service->getDistance());
+
+        return $affiliate;
     }
 
     /**
      * Handle the Affiliate "updating" event.
      *
      * @param  Affiliate  $affiliate
-     * @return void
      */
-    public function updating(Affiliate $affiliate)
+    public function updating(Affiliate &$affiliate): Affiliate
     {
-        $affiliate->setAttribute('eligible_for_events', $this->isEligible($affiliate));
+        $service = self::getAffiliateLocationService($affiliate);
+
+        $affiliate->setAttribute('eligible_for_events', $service->isEligible());
+        $affiliate->setAttribute('distance', $service->getDistance());
+
+        return $affiliate;
     }
 
     /**
-     * is Affiliate Eligible?
+     * Get Affiliate Service
      *
      * @param Affiliate $affiliate
-     * @return bool
+     * @return AffiliateLocationService
      */
-    private function isEligible(Affiliate $affiliate): bool
+    private static function getAffiliateLocationService(Affiliate $affiliate) : AffiliateLocationService
     {
         return AffiliateLocationService::make()
-            ->setCoordinates($affiliate->getAttribute('latitude'), $affiliate->getAttribute('longitude'))
-            ->isEligible();
+            ->setCoordinates((float) $affiliate->getAttribute('latitude'), (float) $affiliate->getAttribute('longitude'));
     }
 }
