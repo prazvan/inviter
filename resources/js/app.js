@@ -8,6 +8,7 @@ import router from './router';
 // import layout
 import App from './layout/App';
 
+
 new Vue({
     router,
     el: '#InviterApp',

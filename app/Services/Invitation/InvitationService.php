@@ -39,12 +39,17 @@ final class InvitationService
     {
         try
         {
+            $affiliateRepository = AffiliateRepository::make();
+
             // loop through the list of invitees and update database with new affiliates
-            $this->invitees->each(function ($invitee)
+            $this->invitees->each(function ($invitee) use ($affiliateRepository)
             {
                 // check if we need to update or create a new affiliate
-                AffiliateRepository::make()->updateOrCreate($invitee);
+                $affiliateRepository->updateOrCreate($invitee);
             });
+
+            // remove cache results after update
+            $affiliateRepository->clearCache();
         }
         catch (\Exception $exception)
         {

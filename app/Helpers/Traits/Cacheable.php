@@ -43,4 +43,15 @@ trait Cacheable
     {
         return Cache::forget($key);
     }
+
+    /**
+     * Clear Cache
+     *
+     * @return bool
+     */
+    public function clearCache(): bool
+    {
+        return Cache::flush();
+    }
+
 }
