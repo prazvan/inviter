@@ -28,7 +28,8 @@ final class AffiliateObserver
     /**
      * Handle the Affiliate "updating" event.
      *
-     * @param  Affiliate  $affiliate
+     * @param Affiliate $affiliate
+     * @return Affiliate
      */
     public function updating(Affiliate &$affiliate): Affiliate
     {
