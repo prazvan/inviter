@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class Affiliates extends Migration
+class Office extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,11 @@ class Affiliates extends Migration
      */
     public function up()
     {
-        Schema::create('affiliates', function (Blueprint $table) {
+        Schema::create('offices', function (Blueprint $table) {
             $table->bigIncrements('id')->autoIncrement();
-            $table->integer('affiliate_id')->unique();
-            $table->string('latitude');
-            $table->string('longitude');
+            $table->string('latitude')->unique();   // you can't have two offices at the same geo-location
+            $table->string('longitude')->unique(); // you can't have two offices at the same geo-location
             $table->string('name');
-            $table->boolean('eligible_for_events');
             $table->timestamps();
         });
     }
@@ -31,6 +29,6 @@ class Affiliates extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('affiliates');
+        Schema::dropIfExists('offices');
     }
 }

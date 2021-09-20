@@ -2,19 +2,23 @@
 
 namespace App\Repositories;
 
-use App\Helpers\Traits\Cacheable;
-use App\Helpers\Traits\Singleton;
-use App\Models\Affiliate;
-use App\Repositories\Eloquent\EloquentRepository;
-
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+
+use App\Helpers\Traits\{
+    Cacheable,
+    Singleton
+};
+
+use App\Repositories\Eloquent\EloquentRepository;
+use App\Models\Affiliate;
 
 /**
  * Affiliate Repo
  */
 final class AffiliateRepository extends EloquentRepository
 {
-    use Singleton, Cacheable;
+    use Singleton;
 
     /**
      * Affiliate Model
@@ -23,31 +27,44 @@ final class AffiliateRepository extends EloquentRepository
      */
     private Affiliate $affiliate;
 
-    public function createOrUpdate(Collection $affiliate): self
+    /**
+     * Update or Create new Affiliate
+     *
+     * @param Collection $affiliate
+     * @return Model
+     */
+    public function updateOrCreate(Collection $affiliate): Model
     {
-        /**
-         * Find Affiliate by affiliate_id
-         * @var Affiliate $affiliate;
-         */
-        $affiliateModel = Affiliate::find(8);
+        // search query
+        $query = ['affiliate_id' => $affiliate->get('affiliate_id')];
 
-        $affiliateModel->update([
-            'affiliate_id' => $affiliate->get('affiliate_id'),
+        // new or updated attributes
+        $fields = [
             'latitude' => $affiliate->get('latitude'),
             'longitude' => $affiliate->get('longitude'),
             'name' => $affiliate->get('name'),
-        ]);
+        ];
 
-        // update with new data
-
-
-        dd($affiliateModel, $affiliate->toArray());
-
-        // set affiliate
-//        $this->affiliate = new Affiliate($affiliate->toArray());
+        // update or create new affiliate
+        return Affiliate::updateOrCreate($query, $fields);
+    }
 
 
-        return $this;
+    /**
+     * Get List with All eligible or ineligible Affiliates
+     *
+     * @param bool $eligible
+     * @return Collection
+     */
+    public function getAll(bool $eligible = true): Collection
+    {
+        $cacheKey = ($eligible ? 'eligible_affiliates' : 'ineligible_affiliates');
+        return $this->cacheQuery($cacheKey, function () use ($eligible)
+        {
+            return Affiliate::where('eligible_for_events', $eligible)
+                ->orderBy('affiliate_id')
+                ->get();
+        });
     }
 
 }

@@ -26,7 +26,7 @@ final class UploadController extends Controller
         // default response
         $response = [
             'body' => [
-                'data' => []
+                'success' => true
             ],
             'status_code' => BaseResponse::HTTP_OK
         ];
@@ -45,13 +45,10 @@ final class UploadController extends Controller
                 throw new InvalidFileException;
             }
 
-
-            $invitations = InvitationService::make()
+            // update Invitees infos
+            InvitationService::make()
                 ->setInvitees($jsonCollection)
-                ->updateAffiliates()
-                ->getListWithEligibleInvitees();
-
-            dd($invitations);
+                ->updateAffiliates();
         }
         catch (\Exception $exception)
         {
@@ -68,5 +65,4 @@ final class UploadController extends Controller
         // return response with success or error
         return \response()->json($response['body'], $response['status_code']);
     }
-
 }

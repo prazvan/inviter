@@ -17,7 +17,6 @@ trait Cacheable
      * if they don't exist, retrieve them from the
      * database and add them to the cache
      *
-     * More information can be found here https://laravel.com/docs/5.2/cache
      *
      * @param string $name     The key that we be used to identify the cache
      * @param Closure $closure The query that you want to cache
@@ -36,7 +35,6 @@ trait Cacheable
      * if they don't exist, retrieve them from the
      * database and add them to the cache
      *
-     * More information can be found here https://laravel.com/docs/5.2/cache
      *
      * @param string $key
      * @return bool

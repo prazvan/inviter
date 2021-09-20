@@ -30,9 +30,10 @@ final class InvitationService
 
     /**
      * Check if we have new affiliates, if so save there credentials for later use.
-     * Otherwise, just update there details.
+     * Otherwise, just update their details.
      *
      * @return $this
+     * @throws \Exception
      */
     public function updateAffiliates(): self
     {
@@ -42,47 +43,38 @@ final class InvitationService
             $this->invitees->each(function ($invitee)
             {
                 // check if we need to update or create a new affiliate
-                AffiliateRepository::make()->createOrUpdate($invitee);
+                AffiliateRepository::make()->updateOrCreate($invitee);
             });
         }
         catch (\Exception $exception)
         {
-            dd($exception);
+            // TODO: some generic error Handling can be done here
+
+            throw $exception;
         }
+
+        return $this;
     }
 
     /**
-     *
+     * Get a list with All the Eligible Invitees
      *
      * @return Collection
+     * @throws \Exception
      */
-    public function getListWithEligibleInvitees() : Collection
+    public function getAllEligibleInvitees(): ?Collection
     {
-        try
-        {
-            $whitelist = collect([]);
+        return AffiliateRepository::make()->getAll(true);
+    }
 
-            // loop through the list of invitees and determinate which one is eligible for an invitation
-            $this->invitees->each(function ($invitee, $index) use ($whitelist)
-            {
-                // save affiliate
-                $affiliate = AffiliateRepository::make()->get($invitee);
-
-                if ($affiliate->iseligibleForEvent())
-                {
-                    $whitelist->push($affiliate);
-                }
-
-            });
-
-            dd($whitelist);
-
-        }
-        catch (\Exception $exception)
-        {
-            dd($exception);
-        }
-
-        return collect([]);
+    /**
+     * Get a list with All the Ineligible Invitees
+     *
+     * @return Collection
+     * @throws \Exception
+     */
+    public function getAllIneligibleInvitees(): ?Collection
+    {
+        return AffiliateRepository::make()->getAll(false);
     }
 }

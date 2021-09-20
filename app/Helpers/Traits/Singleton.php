@@ -10,7 +10,7 @@ trait Singleton
     /**
      * Self Instance
      *
-     * @var static
+     * @var self
      */
     private static $instance = null;
 
